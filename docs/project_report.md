@@ -512,6 +512,3 @@ API_DOC_PORTAL/
 ```
 
 ---
-
-*Report prepared for the AI/ML Engineering course project submission.*
-*All code and documentation produced by Team Agentic Mandi Testers.*
