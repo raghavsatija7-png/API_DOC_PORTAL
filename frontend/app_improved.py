@@ -810,10 +810,42 @@ with tab_docs:
             c1, c2 = st.columns(2)
             with c1:
                 st.markdown("**Sample request**")
-                st.json(doc.get("sample_request"))
+                req_val = doc.get("sample_request")
+                if isinstance(req_val, (dict, list)):
+                    st.json(req_val)
+                elif isinstance(req_val, str):
+                    req_stripped = req_val.strip()
+                    if (req_stripped.startswith("{") and req_stripped.endswith("}")) or (req_stripped.startswith("[") and req_stripped.endswith("]")):
+                        try:
+                            st.json(json.loads(req_stripped))
+                        except Exception:
+                            st.code(req_val)
+                    elif req_stripped.lower().startswith("curl"):
+                        st.code(req_val, language="bash")
+                    else:
+                        st.code(req_val)
+                elif req_val is not None:
+                    st.code(str(req_val))
+                else:
+                    st.caption("None")
             with c2:
                 st.markdown("**Sample response**")
-                st.json(doc.get("sample_response"))
+                resp_val = doc.get("sample_response")
+                if isinstance(resp_val, (dict, list)):
+                    st.json(resp_val)
+                elif isinstance(resp_val, str):
+                    resp_stripped = resp_val.strip()
+                    if (resp_stripped.startswith("{") and resp_stripped.endswith("}")) or (resp_stripped.startswith("[") and resp_stripped.endswith("]")):
+                        try:
+                            st.json(json.loads(resp_stripped))
+                        except Exception:
+                            st.code(resp_val)
+                    else:
+                        st.code(resp_val)
+                elif resp_val is not None:
+                    st.code(str(resp_val))
+                else:
+                    st.caption("None")
 
             if doc.get("usage_notes"):
                 st.markdown("**Usage notes / gotchas:**")
